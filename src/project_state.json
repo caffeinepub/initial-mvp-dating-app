@@ -1,0 +1,243 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 11,
+  "summary": "Dating app project (MVP build, now including payments and admin/superuser access)",
+  "architectural_notes": [],
+  "known_issues": [
+    "Production live app shows a blank page because the production build is referencing `/src/main.tsx`, which does not exist after bundling (Vite dev vs prod entry mismatch).",
+    "Production web app still does not load even after deploying Version 4 (blank/not loading persists in production)."
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-implement-internet-identity-authentication-and-session-aware-ui-so-users-can-sign-in-out-and-the-app-consistently-knows-the-current-principal",
+      "title": "Implement Internet Identity authentication and session-aware UI so users can sign in/out and the app consistently knows the current principal.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-profile-onboarding-editor-flow-in-the-frontend-that-lets-a-signed-in-user-create-and-edit-their-profile-including-selecting-up-to-5-photos-from-provided-generated-static-assets",
+      "title": "Create a profile onboarding/editor flow in the frontend that lets a signed-in user create and edit their profile, including selecting up to 5 photos from provided/generated static assets.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-swipe-style-discover-screen-in-the-frontend-that-displays-candidate-profiles-photos-key-info-and-allows-like-and-pass-actions",
+      "title": "Build a swipe-style Discover screen in the frontend that displays candidate profiles (photos + key info) and allows Like and Pass actions.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-matches-screen-in-the-frontend-that-lists-the-user-s-matches-and-allows-opening-a-match-detail-view",
+      "title": "Create a Matches screen in the frontend that lists the user’s matches and allows opening a match detail view.",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-build-a-chat-screen-in-the-frontend-for-a-selected-match-that-shows-message-history-and-allows-sending-new-messages-with-optimistic-ui-updates-using-react-query",
+      "title": "Build a Chat screen in the frontend for a selected match that shows message history and allows sending new messages with optimistic UI updates using React Query.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-a-coherent-distinctive-visual-theme-for-the-app-typography-color-palette-spacing-and-component-styling-and-apply-it-consistently-across-auth-profile-discover-matches-and-chat-screens-avoid-blue-purple-as-primary-brand-colors",
+      "title": "Provide a coherent, distinctive visual theme for the app (typography, color palette, spacing, and component styling) and apply it consistently across Auth, Profile, Discover, Matches, and Chat screens (avoid blue/purple as primary brand colors).",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-core-navigation-structure-e-g-header-and-or-bottom-nav-with-routes-for-discover-matches-profile-and-sign-in-out-and-protect-routes-so-signed-out-users-cannot-access-app-pages-beyond-auth",
+      "title": "Add core navigation structure (e.g., header and/or bottom nav) with routes for Discover, Matches, Profile, and Sign In/Out, and protect routes so signed-out users cannot access app pages beyond auth.",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-basic-safety-and-moderation-controls-allow-a-user-to-block-another-user-backend-ui-so-blocked-users-do-not-appear-in-discovery-cannot-match-and-cannot-message-each-other",
+      "title": "Add basic safety and moderation controls: allow a user to block another user (backend + UI) so blocked users do not appear in discovery, cannot match, and cannot message each other.",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-new-authenticated-frontend-page-for-payment-methods-that-lists-the-signed-in-user-s-saved-methods-shows-the-current-default-and-supports-adding-and-removing-methods-using-the-backend-apis",
+      "title": "Create a new authenticated frontend page for “Payment Methods” that lists the signed-in user’s saved methods, shows the current default, and supports adding and removing methods using the backend APIs.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-add-payment-method-form-in-the-payment-methods-page-that-collects-only-non-sensitive-card-metadata-nickname-brand-last-4-digits-expiry-month-year-with-validation-and-persists-it-via-the-backend",
+      "title": "Add an “Add payment method” form in the Payment Methods page that collects only non-sensitive card metadata (nickname, brand, last 4 digits, expiry month/year) with validation, and persists it via the backend.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-navigation-entry-point-to-the-payment-methods-page-from-the-existing-signed-in-ui-e-g-from-the-profile-page-and-or-account-menu-using-english-user-facing-text-payment-methods",
+      "title": "Add a navigation entry point to the Payment Methods page from the existing signed-in UI (e.g., from the Profile page and/or account menu), using English user-facing text: “Payment Methods”.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-enhance-the-existing-payment-methods-page-ux-to-feel-closer-to-common-dating-apps-e-g-bumble-style-make-the-default-method-visually-prominent-sort-the-default-method-first-and-provide-clear-primary-actions-for-add-payment-method-set-as-default-and-remove-with-confirmation-dialogs-and-success-error-toasts-all-user-facing-text-must-be-in-english",
+      "title": "Enhance the existing “Payment Methods” page UX to feel closer to common dating apps (e.g., Bumble-style): make the default method visually prominent, sort the default method first, and provide clear primary actions for “Add payment method”, “Set as default”, and “Remove” with confirmation dialogs and success/error toasts. All user-facing text must be in English.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-the-ability-to-edit-an-existing-saved-payment-method-s-non-sensitive-metadata-nickname-brand-last4-expiry-from-the-payment-methods-page-using-the-existing-backend-update-api-with-form-validation-and-clear-ui-states-loading-disabled",
+      "title": "Add the ability to edit an existing saved payment method’s non-sensitive metadata (nickname, brand, last4, expiry) from the Payment Methods page, using the existing backend update API, with form validation and clear UI states (loading/disabled).",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-admin-only-ui-entry-point-and-page-for-the-super-admin-provide-a-simple-admin-page-that-is-only-accessible-when-the-signed-in-user-is-an-admin-and-display-the-current-signed-in-principal-plus-a-bootstrap-action-that-is-shown-only-when-the-backend-reports-that-no-admin-exists-yet",
+      "title": "Add an admin-only UI entry point and page for the super-admin: provide a simple “Admin” page that is only accessible when the signed-in user is an admin, and display the current signed-in Principal plus a bootstrap action that is shown only when the backend reports that no admin exists yet.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-frontend-deployment-artifact-source-of-truth-so-the-deployed-assets-come-from-the-production-build-output-i-e-the-processed-index-html-and-bundled-assets-not-the-raw-source-frontend-index-html-that-contains-script-type-module-src-src-main-tsx-script",
+      "title": "Update the frontend deployment artifact/source-of-truth so the deployed assets come from the production build output (i.e., the processed `index.html` and bundled assets), not the raw source `frontend/index.html` that contains `<script type='module' src='/src/main.tsx'></script>`.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-identify-and-fix-the-remaining-production-blank-page-root-cause-so-the-deployed-site-loads-the-react-app-successfully-not-a-blank-page-when-opened-in-a-fresh-browser-session",
+      "title": "Identify and fix the remaining production blank-page root cause so the deployed site loads the React app successfully (not a blank page) when opened in a fresh browser session.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-harden-deployment-configuration-to-prevent-accidentally-serving-source-files-in-production-ensure-only-dist-build-outputs-are-served-for-icp-asset-canister-deployments-and-for-any-static-hosting-configuration-in-the-repo-and-ensure-frontend-index-html-the-vite-dev-template-is-never-used-as-the-production-served-html",
+      "title": "Harden deployment configuration to prevent accidentally serving source files in production: ensure only `dist/` build outputs are served for ICP asset canister deployments and for any static hosting configuration in the repo, and ensure `frontend/index.html` (the Vite dev template) is never used as the production-served HTML.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-user-visible-english-error-fallback-for-catastrophic-boot-failures-e-g-script-load-failure-so-users-do-not-see-a-completely-blank-page-show-a-minimal-message-with-basic-recovery-guidance",
+      "title": "Add a user-visible, English error fallback for catastrophic boot failures (e.g., script load failure) so users do not see a completely blank page; show a minimal message with basic recovery guidance.",
+      "reqIds": [
+        "REQ-25"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Create a dating app (initial MVP build)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Add backend profile storage and APIs to create, read, and update the signed-in user’s dating profile (minimum fields: display name, age, bio, gender, interested-in, location text, and up to 5 photo URLs referencing frontend static assets).",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Implement backend discovery feed APIs that return a paginated list of candidate profiles excluding the caller and excluding profiles the caller has already liked or passed.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-7",
+      "summary": "Add backend Like/Pass actions and matching logic: when two users like each other, create a match record available to both users.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-9",
+      "summary": "Implement backend private messaging for matched users (non-real-time): send message, list messages by match (paginated), and basic authorization so only matched users can message and read that thread.",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-10",
+      "summary": "Add payment methods / in-app payments support (e.g., subscription or premium features) including UI and backend billing integration.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-11",
+      "summary": "Add backend support for storing and managing a signed-in user’s saved payment methods as non-sensitive metadata (e.g., nickname, brand, last4, expiry), including CRUD APIs and a single default payment method.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Enhance the Payment Methods feature to match common dating apps (e.g., Bumble-style UX: list saved methods, set/change default, add/remove methods).",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Create a super user/admin account with full administrative access (admin role/permissions) for the project owner.",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Implement a super-admin capability in the backend: introduce an admin permission/role and a safe bootstrap flow that creates exactly one initial “super user” who has full administrative access. The bootstrap must be possible for the project owner (“me”) without requiring a pre-seeded principal in code.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Fix the live production blank-page issue by ensuring the deployed HTML does not reference the development-only entrypoint `/src/main.tsx`, and instead loads the compiled/bundled JavaScript generated by the production build.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Initial MVP Dating App",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

@@ -1,0 +1,59 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-13T14:21:08.843Z",
+  "summary": "Deployment hardening was added (ICP asset config points to dist; Netlify/Vercel publish/output set to dist; a build verification script checks dist/index.html doesn’t reference /src/*). However, the diff also includes large unrelated frontend feature/workflow changes, and the boot-failure fallback appears to have been added to the Vite dev template (frontend/index.html), which conflicts with the requirement to ensure that file is never used as production HTML and makes REQ-25’s implementation ambiguous for production.",
+  "missing_requirements": [
+    {
+      "id": "REQ-23",
+      "requirement": "Fix the remaining production blank-page root cause so the deployed site loads the React app successfully in a fresh session and hard refresh, and ensure deployed HTML at / does not reference /src/main.tsx (uses dist/assets/*).",
+      "reason": "The diff adds a verifier that can detect bad dist/index.html, and updates deployment configs to serve dist/, but does not show the actual built production HTML (dist/index.html) or a concrete change that guarantees the deployed / is no longer serving frontend/index.html (dev template). The only shown HTML is frontend/index.html which still references /src/main.tsx.",
+      "evidence": [
+        "frontend/scripts/verify-dist-index.mjs",
+        "frontend/index.html",
+        "frontend/.ic-assets.json5",
+        "frontend/netlify.toml",
+        "frontend/vercel.json"
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "requirement": "Add a user-visible, English error fallback for catastrophic boot failures so users do not see a blank page; fallback must not rely on backend connectivity; successful loads unaffected.",
+      "reason": "A fallback UI is implemented in frontend/index.html (dev template), but REQ-24 requires frontend/index.html is never used as production-served HTML. There is no evidence in the diff that the fallback is present in the built dist/index.html (the production-served HTML).",
+      "evidence": [
+        "frontend/index.html",
+        "frontend/scripts/verify-dist-index.mjs",
+        "frontend/.ic-assets.json5",
+        "frontend/DEPLOYMENT.md"
+      ]
+    }
+  ],
+  "hallucinated_features": [
+    {
+      "description": "Large set of unrelated application/UI feature changes across many React components and pages (discover/matches/chat/profile/admin/payment methods, styling/theme updates, etc.).",
+      "reason": "BuildRequest scope is page-load reliability, deployment hardening, and a minimal boot failure fallback; it explicitly lists non-goals as adding new product features unrelated to page-load reliability or reworking theme/layout beyond what’s necessary. The diff summary indicates broad feature and UI work beyond deployment reliability.",
+      "evidence": [
+        "frontend-file-summaries.txt",
+        "project_state.json"
+      ]
+    },
+    {
+      "description": "Content-Security-Policy and caching header changes in ICP asset configuration beyond serving dist-only.",
+      "reason": "REQ-24 asks to ensure only dist build outputs are served and prevent serving source files; it does not request changing CSP to include 'unsafe-inline'/'unsafe-eval' or specific connect-src expansions.",
+      "evidence": [
+        "frontend/.ic-assets.json5"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/.ic-assets.json5",
+    "frontend/DEPLOYMENT.md",
+    "frontend/index.html",
+    "frontend/netlify.toml",
+    "frontend/scripts/verify-dist-index.mjs",
+    "frontend/vercel.json",
+    "project_state.json"
+  ]
+}

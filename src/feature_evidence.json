@@ -1,0 +1,68 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-identify-and-fix-the-remaining-production-blank-page-root-cause-so-the-deployed-site-loads-the-react-app-successfully-not-a-blank-page-when-opened-in-a-fresh-browser-session",
+      "featureTitle": "Identify and fix the remaining production blank-page root cause so the deployed site loads the React app successfully (not a blank page) when opened in a fresh browser session.",
+      "files": [
+        "frontend/.ic-assets.json5",
+        "frontend/netlify.toml",
+        "frontend/scripts/verify-dist-index.mjs",
+        "frontend/vercel.json"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-23"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-harden-deployment-configuration-to-prevent-accidentally-serving-source-files-in-production-ensure-only-dist-build-outputs-are-served-for-icp-asset-canister-deployments-and-for-any-static-hosting-configuration-in-the-repo-and-ensure-frontend-index-html-the-vite-dev-template-is-never-used-as-the-production-served-html",
+      "featureTitle": "Harden deployment configuration to prevent accidentally serving source files in production: ensure only `dist/` build outputs are served for ICP asset canister deployments and for any static hosting configuration in the repo, and ensure `frontend/index.html` (the Vite dev template) is never used as the production-served HTML.",
+      "files": [
+        "frontend/.ic-assets.json5",
+        "frontend/DEPLOYMENT.md",
+        "frontend/netlify.toml",
+        "frontend/vercel.json"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-24"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-add-a-user-visible-english-error-fallback-for-catastrophic-boot-failures-e-g-script-load-failure-so-users-do-not-see-a-completely-blank-page-show-a-minimal-message-with-basic-recovery-guidance",
+      "featureTitle": "Add a user-visible, English error fallback for catastrophic boot failures (e.g., script load failure) so users do not see a completely blank page; show a minimal message with basic recovery guidance.",
+      "files": [
+        "frontend/index.html"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-25"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

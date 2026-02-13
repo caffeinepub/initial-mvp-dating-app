@@ -1,0 +1,75 @@
+{
+  "kind": "build_request",
+  "title": "Fix production web app not loading (blank page)",
+  "priority": "high",
+  "requirements": [
+    {
+      "id": "REQ-23",
+      "text": "Identify and fix the remaining production blank-page root cause so the deployed site loads the React app successfully (not a blank page) when opened in a fresh browser session.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Still the web page is not loading"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Visiting the production URL renders the app shell (Auth page when signed out, or Discover when signed in) instead of a blank page.",
+        "A hard refresh (Ctrl/Cmd+Shift+R) still loads correctly.",
+        "The deployed HTML served at `/` does not reference the development-only entrypoint `/src/main.tsx` (it references built assets from `dist/assets/*`)."
+      ]
+    },
+    {
+      "id": "REQ-24",
+      "text": "Harden deployment configuration to prevent accidentally serving source files in production: ensure only `dist/` build outputs are served for ICP asset canister deployments and for any static hosting configuration in the repo, and ensure `frontend/index.html` (the Vite dev template) is never used as the production-served HTML.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Still the web page is not loading"
+        ]
+      },
+      "acceptanceCriteria": [
+        "For ICP deployments, the asset configuration serves files from `dist/` (per `frontend/.ic-assets.json5`) and the deployed `/index.html` matches the built output (no `/src/main.tsx`).",
+        "For Netlify/Vercel configurations present in the repo, the publish/output directory remains `dist` and SPA rewrites continue to work.",
+        "The repo contains a clear, verifiable deployment path that cannot regress to serving `frontend/index.html` directly in production."
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "text": "Add a user-visible, English error fallback for catastrophic boot failures (e.g., script load failure) so users do not see a completely blank page; show a minimal message with basic recovery guidance.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-6"
+        ],
+        "quotes": [
+          "Still the web page is not loading"
+        ]
+      },
+      "acceptanceCriteria": [
+        "If the app fails to mount, the page shows an English message such as \"The app failed to load. Please refresh the page.\" (or equivalent) instead of staying blank.",
+        "The fallback does not rely on backend connectivity to render.",
+        "Normal successful loads are unaffected (no fallback shown)."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not modify files under the immutable frontend paths listed in SYSTEM_CONTEXT (e.g., `frontend/src/main.tsx`, `frontend/src/hooks/useInternetIdentity.ts(x)`, `frontend/src/hooks/useActor.ts`, `frontend/src/components/ui`).",
+    "Keep all user-facing text in English.",
+    "Respect the existing single-actor Motoko backend architecture; this fix should not require backend changes unless a confirmed backend issue is discovered."
+  ],
+  "nonGoals": [
+    "Adding new product features unrelated to page-load reliability.",
+    "Changing authentication providers or adding third-party monitoring/analytics services.",
+    "Reworking the app’s visual theme or layout beyond what is necessary to prevent a blank page and to show an error fallback."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}

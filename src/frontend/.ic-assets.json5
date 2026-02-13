@@ -1,0 +1,54 @@
+// ICP Asset Canister Configuration
+// Ensures the asset canister serves files from the production build output
+[
+  {
+    // HTML files - no caching to ensure fresh content after deploy
+    "match": "*.html",
+    "source": "dist",
+    "cache": {
+      "max_age": 0
+    },
+    "headers": {
+      "Cache-Control": "no-cache, no-store, must-revalidate",
+      "Content-Security-Policy": "default-src 'self' 'unsafe-inline' 'unsafe-eval' https:; connect-src 'self' https://identity.ic0.app https://icp-api.io https://icp0.io https://*.icp0.io https://*.ic0.app;"
+    }
+  },
+  {
+    // Immutable assets (JS, CSS, images with hashed names)
+    "match": "assets/**/*",
+    "source": "dist",
+    "cache": {
+      "max_age": 31536000
+    },
+    "headers": {
+      "Cache-Control": "public, max-age=31536000, immutable"
+    }
+  },
+  {
+    // Static assets folder
+    "match": "assets/**/*",
+    "source": "dist",
+    "cache": {
+      "max_age": 31536000
+    },
+    "headers": {
+      "Cache-Control": "public, max-age=31536000, immutable"
+    }
+  },
+  {
+    // All other files
+    "match": "**/*",
+    "source": "dist",
+    "cache": {
+      "max_age": 3600
+    },
+    "headers": {
+      "Content-Security-Policy": "default-src 'self' 'unsafe-inline' 'unsafe-eval' https:; connect-src 'self' https://identity.ic0.app https://icp-api.io https://icp0.io https://*.icp0.io https://*.ic0.app;"
+    },
+    "ignore": [
+      ".DS_Store",
+      "node_modules/**/*",
+      "src/**/*"
+    ]
+  }
+]

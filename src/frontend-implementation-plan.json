@@ -1,0 +1,85 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Fix production blank page by enforcing dist-only deploys, safe caching, and boot failure fallback",
+  "requirements": [
+    {
+      "id": "REQ-23",
+      "summary": "Fix the remaining production blank-page root cause so the built React app loads reliably in fresh sessions and after hard refresh.",
+      "acceptanceCriteria": [
+        "Visiting the production URL renders the app shell (Auth page when signed out, or Discover when signed in) instead of a blank page.",
+        "A hard refresh (Ctrl/Cmd+Shift+R) still loads correctly.",
+        "The deployed HTML served at `/` does not reference the development-only entrypoint `/src/main.tsx` (it references built assets from `dist/assets/*`)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/.ic-assets.json5",
+          "operation": "modify",
+          "description": "Adjust ICP asset canister rules to avoid long-lived caching of HTML (especially index.html) while keeping immutable caching for dist/assets; ensure the served /index.html updates immediately after deploy to prevent blank pages caused by stale HTML referencing non-existent assets."
+        },
+        {
+          "path": "frontend/netlify.toml",
+          "operation": "modify",
+          "description": "Add/adjust headers so HTML (index.html) is not cached aggressively while keeping long-lived caching for /assets/*; ensure fresh sessions consistently receive the latest built HTML."
+        },
+        {
+          "path": "frontend/vercel.json",
+          "operation": "modify",
+          "description": "Add/adjust headers so HTML (index.html) is not cached aggressively while keeping long-lived caching for /assets/*; ensure fresh sessions consistently receive the latest built HTML."
+        },
+        {
+          "path": "frontend/scripts/verify-dist-index.mjs",
+          "operation": "create",
+          "description": "Create a small build verification script that asserts the built dist/index.html references bundled assets (dist/assets/*) and does not contain '/src/main.tsx'; exit non-zero if invalid to prevent deploying a broken/blank build."
+        }
+      ]
+    },
+    {
+      "id": "REQ-24",
+      "summary": "Harden deployment configuration so production always serves dist build outputs (never frontend/index.html or source files) across ICP, Netlify, and Vercel, with a verifiable non-regressing path.",
+      "acceptanceCriteria": [
+        "For ICP deployments, the asset configuration serves files from `dist/` (per `frontend/.ic-assets.json5`) and the deployed `/index.html` matches the built output (no `/src/main.tsx`).",
+        "For Netlify/Vercel configurations present in the repo, the publish/output directory remains `dist` and SPA rewrites continue to work.",
+        "The repo contains a clear, verifiable deployment path that cannot regress to serving `frontend/index.html` directly in production."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/netlify.toml",
+          "operation": "modify",
+          "description": "Harden Netlify build to run the dist HTML verification script after building (and fail the build if it detects dev-only references); keep publish directory as dist and preserve SPA redirects."
+        },
+        {
+          "path": "frontend/vercel.json",
+          "operation": "modify",
+          "description": "Harden Vercel build to run the dist HTML verification script after building (and fail the build if it detects dev-only references); keep outputDirectory as dist and preserve SPA rewrites."
+        },
+        {
+          "path": "frontend/DEPLOYMENT.md",
+          "operation": "modify",
+          "description": "Update deployment documentation to provide a clear, verifiable production workflow: build to dist, verify dist/index.html is production-ready, and ensure hosts/ICP serve only dist; explicitly warn that frontend/index.html is a Vite dev template and must never be used as production-served HTML."
+        },
+        {
+          "path": "frontend/.ic-assets.json5",
+          "operation": "modify",
+          "description": "Ensure ICP asset configuration is explicitly dist-only and structured to prevent accidental serving/caching of source/dev HTML; align with the verification expectations described in DEPLOYMENT.md."
+        }
+      ]
+    },
+    {
+      "id": "REQ-25",
+      "summary": "Add a user-visible English fallback message for catastrophic boot failures so users do not see a blank page.",
+      "acceptanceCriteria": [
+        "If the app fails to mount, the page shows an English message such as \"The app failed to load. Please refresh the page.\" (or equivalent) instead of staying blank.",
+        "The fallback does not rely on backend connectivity to render.",
+        "Normal successful loads are unaffected (no fallback shown)."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/index.html",
+          "operation": "modify",
+          "description": "Add a minimal, self-contained boot failure fallback that displays an English recovery message if the app does not mount (e.g., module script load failure, runtime error, or mount timeout). Ensure the fallback is hidden/never shown on successful app mount and does not require backend connectivity."
+        }
+      ]
+    }
+  ]
+}

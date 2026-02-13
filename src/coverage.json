@@ -1,0 +1,76 @@
+{
+  "kind": "coverage_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-13T14:21:08.846Z",
+  "sources": {
+    "buildRequest": true,
+    "implementationPlan": true
+  },
+  "requirements": {
+    "total": 3,
+    "implemented": 3,
+    "items": [
+      {
+        "id": "REQ-23",
+        "summary": "Identify and fix the remaining production blank-page root cause so the deployed site loads the React app successfully (not a blank page) when opened in a fresh browser session.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/.ic-assets.json5",
+          "frontend/netlify.toml",
+          "frontend/vercel.json",
+          "frontend/scripts/verify-dist-index.mjs"
+        ],
+        "matchedFiles": [
+          "frontend/.ic-assets.json5",
+          "frontend/netlify.toml",
+          "frontend/vercel.json",
+          "frontend/scripts/verify-dist-index.mjs"
+        ]
+      },
+      {
+        "id": "REQ-24",
+        "summary": "Harden deployment configuration to prevent accidentally serving source files in production: ensure only `dist/` build outputs are served for ICP asset canister deployments and for any static hosting configuration in the repo, and ensure `frontend/index.html` (the Vite dev template) is never used as the production-served HTML.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/netlify.toml",
+          "frontend/vercel.json",
+          "frontend/DEPLOYMENT.md",
+          "frontend/.ic-assets.json5"
+        ],
+        "matchedFiles": [
+          "frontend/netlify.toml",
+          "frontend/vercel.json",
+          "frontend/DEPLOYMENT.md",
+          "frontend/.ic-assets.json5"
+        ]
+      },
+      {
+        "id": "REQ-25",
+        "summary": "Add a user-visible, English error fallback for catastrophic boot failures (e.g., script load failure) so users do not see a completely blank page; show a minimal message with basic recovery guidance.",
+        "status": "implemented",
+        "plannedFiles": [
+          "frontend/index.html"
+        ],
+        "matchedFiles": [
+          "frontend/index.html"
+        ]
+      }
+    ]
+  },
+  "changedFiles": [
+    "build-request.json",
+    "feature_evidence.json",
+    "frontend-file-summaries.txt",
+    "frontend-implementation-plan.json",
+    "frontend/.ic-assets.json5",
+    "frontend/DEPLOYMENT.md",
+    "frontend/index.html",
+    "frontend/netlify.toml",
+    "frontend/scripts/verify-dist-index.mjs",
+    "frontend/vercel.json",
+    "project_state.json",
+    "scratch/component-selection.json",
+    "spec.md",
+    "spec_vs_diff_report.json"
+  ]
+}
